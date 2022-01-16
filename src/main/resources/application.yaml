@@ -4,5 +4,9 @@ proxy:
   attribute: href
 
 spring:
+  main:
+    cloud-platform: none
+    lazy-initialization: true
+    web-application-type: reactive
   codec:
-    max-in-memory-size: 100MB
+    max-in-memory-size: 1MB

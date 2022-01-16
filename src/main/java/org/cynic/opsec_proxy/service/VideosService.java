@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.cynic.opsec_proxy.Configuration;
 import org.cynic.opsec_proxy.domain.dto.Video;
 import org.jsoup.Jsoup;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,7 +23,6 @@ public class VideosService {
         this.proxyConfiguration = proxyConfiguration;
     }
 
-    @Cacheable("videos")
     public Flux<Video> all() {
         return webClientBuilder
                 .build()

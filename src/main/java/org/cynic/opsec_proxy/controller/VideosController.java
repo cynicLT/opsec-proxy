@@ -25,7 +25,7 @@ public class VideosController {
     }
 
     @GetMapping(path = "/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<String> video(@PathVariable String title) {
-        return videosFacade.get(title);
+    public Mono<List<String>> video(@PathVariable String title) {
+        return videosFacade.get(title).collectList();
     }
 }

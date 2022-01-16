@@ -1,6 +1,5 @@
 package org.cynic.opsec_proxy.facade;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cynic.opsec_proxy.domain.ApplicationException;
 import org.cynic.opsec_proxy.domain.dto.Video;
@@ -13,6 +12,7 @@ import reactor.core.publisher.Mono;
 public class VideosFacade {
     private final VideosService videosService;
 
+
     public VideosFacade(VideosService videosService) {
         this.videosService = videosService;
     }
@@ -21,15 +21,10 @@ public class VideosFacade {
         return videosService.all().map(Video::link);
     }
 
-    public Mono<String> get(String title) {
+    public Flux<String> get(String title) {
         return videosService.all()
-                .filter(it -> StringUtils.equalsIgnoreCase(it.title(), title))
-                .collectList()
-                .filter(CollectionUtils::isNotEmpty)
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new ApplicationException("error.video.not-found", title))))
-                .filter(it -> CollectionUtils.size(it) == 1)
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new ApplicationException("error.video.non-unique", title))))
-                .map(CollectionUtils::extractSingleton)
-                .map(Video::link);
+                .filter(it -> StringUtils.containsIgnoreCase(it.title(), title))
+                .map(Video::link)
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new ApplicationException("error.video.not-found", title))));
     }
 }

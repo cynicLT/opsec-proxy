@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.codec.CodecsAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration;
@@ -16,10 +15,6 @@ import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.codec.ServerCodecConfigurer;
@@ -33,7 +28,7 @@ import java.net.URI;
         @ComponentScan.Filter(type = FilterType.CUSTOM, classes = {TypeExcludeFilter.class}),
         @ComponentScan.Filter(type = FilterType.CUSTOM, classes = {AutoConfigurationExcludeFilter.class})
 })
-@EnableCaching
+//@EnableCaching
 
 //@EnableAutoConfiguration
 @ImportAutoConfiguration({
@@ -45,7 +40,6 @@ import java.net.URI;
 
 //      Jackson
         JacksonAutoConfiguration.class,
-        CacheAutoConfiguration.class,
 
 //      Web client
         WebClientAutoConfiguration.class
@@ -54,12 +48,6 @@ import java.net.URI;
         Configuration.ProxyConfiguration.class
 })
 public class Configuration {
-
-    @Bean
-    public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("videos");
-    }
-
     @ConfigurationProperties(prefix = "proxy")
     @ConstructorBinding
     public record ProxyConfiguration(URI uri, String select, String attribute) {

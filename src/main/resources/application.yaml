@@ -1,0 +1,8 @@
+proxy:
+  uri: https://www.watchseries1.video/all-series
+  select: li.list-group-item>a
+  attribute: href
+
+spring:
+  codec:
+    max-in-memory-size: 100MB
